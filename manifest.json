@@ -1,0 +1,17 @@
+{
+"name": "闽南纪行 - 泉州厦门游",
+"short_name": "闽南游",
+"description": "2026 泉州与厦门6日定制游旅行计划与账本",
+"start_url": "./index.html",
+"display": "standalone",
+"background_color": "#fcfbf9",
+"theme_color": "#8b0000",
+"icons": [
+{
+"src": "icon.png",
+"sizes": "192x192 512x512",
+"type": "image/png",
+"purpose": "any maskable"
+}
+]
+}

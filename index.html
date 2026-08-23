@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泉州·厦门6日游旅行计划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: {
+                            100: '#f5f5f5',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                            400: '#a3a3a3',
+                            500: '#737373',
+                            600: '#525252',
+                            700: '#404040',
+                            800: '#262626',
+                            900: '#171717',
+                            950: '#0a0a0a',
+                        },
+                        accent: {
+                            red: '#8b0000', // Traditional Chinese red accent
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Serif SC"', '"Songti SC"', 'STSong', 'serif'], // Serif fonts for traditional feel
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base styles for Ink Wash aesthetic */
+        body {
+            background-color: #fcfbf9; /* Slightly warm paper color */
+            background-image: url('https://www.transparenttextures.com/patterns/rice-paper.png'); /* Subtle paper texture */
+            color: #262626;
+            scroll-behavior: smooth;
+        }
+
+        /* Ink bleed effect for borders */
+        .ink-border {
+            border: 1px solid #404040;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1), -1px -1px 3px rgba(255,255,255,0.8);
+            border-radius: 4px;
+        }
+
+        /* Calligraphy style headers */
+        h1, h2, h3, h4 {
+            font-family: '"Kaiti SC"', 'STKaiti', 'KaiTi', serif;
+            letter-spacing: 0.05em;
+        }
+
+        .brush-stroke-bottom {
+            position: relative;
+        }
+        .brush-stroke-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #8b0000;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: blur(1px);
+        }
+
+        /* Section backgrounds to simulate landscape paintings slightly */
+        .bg-landscape {
+            background-image: linear-gradient(to bottom, rgba(252,251,249,0.9), rgba(252,251,249,1)), url('https://images.unsplash.com/photo-1572010196752-6d2c499c85db?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Fallback misty mountain image */
+            background-size: cover;
+            background-position: center top;
+            background-attachment: fixed;
+        }
+        
+        .table-row-hover:hover {
+            background-color: rgba(139, 0, 0, 0.05);
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #404040;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 12px;
+            position: fixed;
+            z-index: 50;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s, bottom 0.3s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+        /* Loader for expenses */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #8b0000;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <nav class="bg-ink-100 border-b border-ink-300 sticky top-0 z-40 bg-opacity-90 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-mountain-sun text-accent-red text-2xl mr-3"></i>
+                    <span class="font-bold text-xl tracking-widest text-ink-800" style="font-family: 'Kaiti SC', serif;">闽南纪行</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#overview" class="text-ink-600 hover:text-accent-red transition-colors">概览</a>
+                    <a href="#itinerary" class="text-ink-600 hover:text-accent-red transition-colors">行程</a>
+                    <a href="#souvenirs" class="text-ink-600 hover:text-accent-red transition-colors">伴手礼</a>
+                    <a href="#expenses" class="text-accent-red font-bold hover:text-red-900 transition-colors"><i class="fa-solid fa-book-open mr-1"></i>账本</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="flex items-center md:hidden">
+                    <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-ink-600 hover:text-ink-900 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-ink-100 border-b border-ink-300">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview" class="block px-3 py-2 rounded-md text-base font-medium text-ink-700 hover:text-accent-red hover:bg-ink-200">概览</a>
+                <a href="#itinerary" class="block px-3 py-2 rounded-md text-base font-medium text-ink-700 hover:text-accent-red hover:bg-ink-200">行程</a>
+                <a href="#souvenirs" class="block px-3 py-2 rounded-md text-base font-medium text-ink-700 hover:text-accent-red hover:bg-ink-200">伴手礼</a>
+                <a href="#expenses" class="block px-3 py-2 rounded-md text-base font-medium text-accent-red bg-red-50 hover:bg-red-100">账本</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-landscape py-6 lg:py-10 text-center relative">
+        <div class="absolute inset-0 bg-white opacity-40"></div>
+        <div class="relative z-10 max-w-4xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-bold text-ink-900 mb-4 drop-shadow-md">泉州 · 厦门</h1>
+            <p class="text-xl md:text-2xl text-ink-700 mb-2 tracking-widest" style="font-family: 'Kaiti SC', serif;">半城烟火半城仙</p>
+            <p class="text-base text-ink-600 mt-4 mb-1">6日定制游旅行计划</p>
+            <p class="text-sm text-ink-500">2026年12月19日 - 12月24日</p>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 space-y-10">
+        
+        <section id="infographic" class="fade-in">
+            <h2 class="text-3xl text-ink-800 mb-8 text-center brush-stroke-bottom inline-block mx-auto block w-max">行程全览</h2>
+            <div class="ink-border p-2 bg-white rounded-lg shadow-lg overflow-hidden flex justify-center">
+                <!-- Using xiamen.png as requested, with fallback -->
+                <img src="xiamen.png" alt="泉州厦门旅游计划概览长图" class="w-full max-w-4xl h-auto object-contain rounded" onerror="this.onerror=null; this.src='https://placehold.co/1200x800/f5f5f5/404040?text=泉州厦门旅游计划全览图+(xiamen.png)';">
+            </div>
+            <p class="text-center text-sm text-ink-500 mt-2">参考行程概览长图</p>
+        </section>
+
+        <section id="overview" class="bg-white p-6 md:p-8 ink-border shadow-sm">
+            <h2 class="text-2xl text-ink-800 mb-6 brush-stroke-bottom inline-block">出行信息</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Basic Info -->
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <i class="fa-solid fa-user text-accent-red mt-1 w-6"></i>
+                        <div>
+                            <span class="font-bold text-ink-700">出行人：</span>
+                            <span class="text-ink-600">Tey Kai Loon</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fa-solid fa-car text-accent-red mt-1 w-6"></i>
+                        <div>
+                            <span class="font-bold text-ink-700">出行方式：</span>
+                            <span class="text-ink-600">全程携程包车 (尊享专车点对点接送, 行李随车, 行程自由灵活)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fa-solid fa-utensils text-accent-red mt-1 w-6"></i>
+                        <div>
+                            <span class="font-bold text-ink-700">饮食禁忌：</span>
+                            <span class="text-ink-600">不吃牛肉，少辣/不辣。<br><span class="text-sm text-ink-500">(注：推荐均已避开牛肉及重辣，主打闽南清淡鲜甜，餐均预算≤100元)</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flights Table -->
+                <div class="overflow-x-auto">
+                    <h3 class="text-lg font-bold text-ink-700 mb-3 flex items-center"><i class="fa-solid fa-plane-departure mr-2 text-ink-500"></i>航班信息</h3>
+                    <table class="min-w-full text-sm text-left text-ink-600">
+                        <thead class="text-xs text-ink-700 uppercase bg-ink-100">
+                            <tr>
+                                <th scope="col" class="px-4 py-2 rounded-tl">航段</th>
+                                <th scope="col" class="px-4 py-2">航班号</th>
+                                <th scope="col" class="px-4 py-2">日期</th>
+                                <th scope="col" class="px-4 py-2 rounded-tr">起降时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b border-ink-200 table-row-hover">
+                                <td class="px-4 py-3 font-medium">SIN <i class="fa-solid fa-arrow-right mx-1 text-ink-400"></i> XMN</td>
+                                <td class="px-4 py-3">SQ 868<br><span class="text-xs text-ink-400">B737-8 MAX</span></td>
+                                <td class="px-4 py-3">12.19 (六)</td>
+                                <td class="px-4 py-3">07:40 SIN (T3)<br>12:25 XMN (T3)</td>
+                            </tr>
+                            <tr class="bg-white table-row-hover">
+                                <td class="px-4 py-3 font-medium">XMN <i class="fa-solid fa-arrow-right mx-1 text-ink-400"></i> SIN</td>
+                                <td class="px-4 py-3">SQ 869<br><span class="text-xs text-ink-400">B737-8 MAX</span></td>
+                                <td class="px-4 py-3">12.24 (四)</td>
+                                <td class="px-4 py-3">13:40 XMN (T3)<br>18:30 SIN (T3)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Hotels Table -->
+            <div class="mt-8 overflow-x-auto">
+                <h3 class="text-lg font-bold text-ink-700 mb-3 flex items-center"><i class="fa-solid fa-hotel mr-2 text-ink-500"></i>住宿信息</h3>
+                <table class="min-w-full text-sm text-left text-ink-600">
+                    <thead class="text-xs text-ink-700 uppercase bg-ink-100">
+                        <tr>
+                            <th scope="col" class="px-4 py-2 rounded-tl">酒店</th>
+                            <th scope="col" class="px-4 py-2">地址</th>
+                            <th scope="col" class="px-4 py-2">入住/退房</th>
+                            <th scope="col" class="px-4 py-2 rounded-tr">房型 / 电话</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b border-ink-200 table-row-hover">
+                            <td class="px-4 py-3 font-bold text-ink-800">泉州西街九一街轻居</td>
+                            <td class="px-4 py-3">泉州鲤城区九一街79号百脑汇商厦3层</td>
+                            <td class="px-4 py-3">12.19 - 12.22<br><span class="text-accent-red font-medium">(3晚)</span></td>
+                            <td class="px-4 py-3">精选大床房<br><span class="text-xs">0595-28985566</span></td>
+                        </tr>
+                        <tr class="bg-white table-row-hover">
+                            <td class="px-4 py-3 font-bold text-ink-800">厦门中山路镇海路轻居</td>
+                            <td class="px-4 py-3">厦门思明南路158号一期CD部二楼</td>
+                            <td class="px-4 py-3">12.22 - 12.24<br><span class="text-accent-red font-medium">(2晚)</span></td>
+                            <td class="px-4 py-3">高级大床房<br><span class="text-xs">0592-5168785</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="itinerary" class="space-y-8">
+            <h2 class="text-3xl text-ink-800 text-center brush-stroke-bottom inline-block mx-auto block w-max mb-6">每日深度游行程</h2>
+            <p class="text-center text-ink-500 text-sm mb-8">酒店包含早餐，以下膳食规划为您定制午餐、晚餐及宵夜。</p>
+
+            <!-- Grid for days -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <!-- Day 1 -->
+                <div class="bg-white p-6 ink-border shadow-sm rounded-lg relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-ink-800 text-white px-3 py-1 rounded-bl-lg font-serif">Day 1</div>
+                    <h3 class="text-xl font-bold text-ink-800 mb-2 mt-2">12月19日 (周六)</h3>
+                    <p class="text-accent-red font-medium mb-4">抵达厦门，初识最美学府，前往泉州</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-bold text-ink-700 flex items-center border-b border-ink-200 pb-1 mb-2"><i class="fa-solid fa-map-location-dot mr-2 text-ink-400"></i>行程简介</h4>
+                        <p class="text-ink-600 text-sm leading-relaxed">抵达后包车司机接机。第一站前往“中国最美大学”【厦门大学】。随后乘车(约1.5小时)前往“半城烟火半城仙”的泉州，入住酒店休息。行李可一直放在车上，轻松游览。</p>
+                    </div>
+
+                    <div class="space-y-3 bg-ink-50 p-3 rounded text-sm">
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-bowl-food mr-1 text-accent-red"></i> 午餐 (厦门)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(特色):</span> 大中沙茶面 (约¥36)。老店，汤浓不辣。</li>
+                                <li><span class="font-medium">B(家常):</span> 浮屿大同鸭肉粥 (约¥30)。软糯养胃。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-utensils mr-1 text-accent-red"></i> 晚餐 (泉州)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(必吃):</span> 斯丹姜母鸭 (约¥70)。姜香不辣，下饭。</li>
+                                <li><span class="font-medium">B(老字号):</span> 侯阿婆肉粽 (约¥35)。干贝肉粽配肉燕汤。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-moon mr-1 text-accent-red"></i> 宵夜 (酒店周边)</span>
+                            <p class="text-ink-600 pl-5">水门国仔面线糊 (约¥20)。海鲜汤底，温润养胃。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 2 -->
+                <div class="bg-white p-6 ink-border shadow-sm rounded-lg relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-ink-800 text-white px-3 py-1 rounded-bl-lg font-serif">Day 2</div>
+                    <h3 class="text-xl font-bold text-ink-800 mb-2 mt-2">12月20日 (周日)</h3>
+                    <p class="text-accent-red font-medium mb-4">泉州世遗文化与非遗体验深度游</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-bold text-ink-700 flex items-center border-b border-ink-200 pb-1 mb-2"><i class="fa-solid fa-map-location-dot mr-2 text-ink-400"></i>行程简介</h4>
+                        <p class="text-ink-600 text-sm leading-relaxed">游览【开元寺】、【关岳庙】。在“厝边欢喜”沉浸式体验提线木偶、宋氏香篆或南音。逛【西街与钟楼】(买冰箱贴好去处)。</p>
+                    </div>
+
+                    <div class="space-y-3 bg-ink-50 p-3 rounded text-sm">
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-bowl-food mr-1 text-accent-red"></i> 午餐 (西街附近)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(老店):</span> 忠记盐烧鸭 (约¥60)。外酥里嫩。</li>
+                                <li><span class="font-medium">B(面食):</span> 泮宫卤面 (约¥30)。浓郁海鲜猪骨汤底。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-utensils mr-1 text-accent-red"></i> 晚餐 (泉州)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(小吃):</span> 西街小吃打卡 (约¥40-60)。麻糍、润饼吃到饱。</li>
+                                <li><span class="font-medium">B(闽菜):</span> 阿秋风味小炒 (约¥80)。闽南炒米粉、海鲜砂锅。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-moon mr-1 text-accent-red"></i> 宵夜 (酒店周边)</span>
+                            <p class="text-ink-600 pl-5">远芳小笼包 (约¥30)。纯猪肉馅配清甜四果汤。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="bg-white p-6 ink-border shadow-sm rounded-lg relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-ink-800 text-white px-3 py-1 rounded-bl-lg font-serif">Day 3</div>
+                    <h3 class="text-xl font-bold text-ink-800 mb-2 mt-2">12月21日 (周一)</h3>
+                    <p class="text-accent-red font-medium mb-4">永春非遗寻香品醋一日游</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-bold text-ink-700 flex items-center border-b border-ink-200 pb-1 mb-2"><i class="fa-solid fa-map-location-dot mr-2 text-ink-400"></i>行程简介</h4>
+                        <p class="text-ink-600 text-sm leading-relaxed">包车前往永春县。游览【彬达香文化创意园】、【侨新老醋文创园】、【五里古街】。</p>
+                    </div>
+
+                    <div class="space-y-3 bg-ink-50 p-3 rounded text-sm">
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-bowl-food mr-1 text-accent-red"></i> 午餐 (永春)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(名菜):</span> 永春老醋猪脚饭店 (约¥70)。软烂酸甜开胃。</li>
+                                <li><span class="font-medium">B(锅物):</span> 永春咯摊 (约¥50)。清汤火锅，汤鲜味美。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-utensils mr-1 text-accent-red"></i> 晚餐 (返回泉州)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(海鲜):</span> 阿婆姜母鸭附近大排档 (约¥80)。清蒸小海鲜。</li>
+                                <li><span class="font-medium">B(主食):</span> 深沪名小吃(壶仔饭) (约¥35)。配肉燕汤。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-moon mr-1 text-accent-red"></i> 宵夜 (酒店周边)</span>
+                            <p class="text-ink-600 pl-5">群众芋头饼 (约¥10)。外皮酥脆，内里绵密芋泥。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 4 -->
+                <div class="bg-white p-6 ink-border shadow-sm rounded-lg relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-ink-800 text-white px-3 py-1 rounded-bl-lg font-serif">Day 4</div>
+                    <h3 class="text-xl font-bold text-ink-800 mb-2 mt-2">12月22日 (周二)</h3>
+                    <p class="text-accent-red font-medium mb-4">告别泉州，拥抱厦门浪漫海岸</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-bold text-ink-700 flex items-center border-b border-ink-200 pb-1 mb-2"><i class="fa-solid fa-map-location-dot mr-2 text-ink-400"></i>行程简介</h4>
+                        <p class="text-ink-600 text-sm leading-relaxed">前往厦门。打卡【集美学村】、【十里长堤】赏日落。傍晚入住厦门镇海路酒店。</p>
+                    </div>
+
+                    <div class="space-y-3 bg-ink-50 p-3 rounded text-sm">
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-bowl-food mr-1 text-accent-red"></i> 午餐 (厦门集美)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(老字号):</span> 味友(集美店) (约¥90)。鸭肉面线滋补。</li>
+                                <li><span class="font-medium">B(轻食):</span> 素香园素食自助 (约¥60)。小火锅和蔬菜。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-utensils mr-1 text-accent-red"></i> 晚餐 (中山路附近)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(老街):</span> 局口拌面 (约¥35)。搭配猪肝瘦肉汤。</li>
+                                <li><span class="font-medium">B(海鲜):</span> 八市附近海鲜大排档 (约¥90)。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-moon mr-1 text-accent-red"></i> 宵夜 (酒店周边)</span>
+                            <p class="text-ink-600 pl-5">阿杰五香 (约¥15)。酥脆五香卷，不辣香气扑鼻。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 5 -->
+                <div class="bg-white p-6 ink-border shadow-sm rounded-lg relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-ink-800 text-white px-3 py-1 rounded-bl-lg font-serif">Day 5</div>
+                    <h3 class="text-xl font-bold text-ink-800 mb-2 mt-2">12月23日 (周三)</h3>
+                    <p class="text-accent-red font-medium mb-4">万国建筑博览与鹭江夜色</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-bold text-ink-700 flex items-center border-b border-ink-200 pb-1 mb-2"><i class="fa-solid fa-map-location-dot mr-2 text-ink-400"></i>行程简介</h4>
+                        <p class="text-ink-600 text-sm leading-relaxed">【鼓浪屿】一日游。晚上逛【中山路步行街】，随后体验【鹭江夜游】。</p>
+                    </div>
+
+                    <div class="space-y-3 bg-ink-50 p-3 rounded text-sm">
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-bowl-food mr-1 text-accent-red"></i> 午餐 (鼓浪屿)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(小吃):</span> 林氏沙茶面/鱼丸/麻糍 (约¥45)。龙头路品尝。</li>
+                                <li><span class="font-medium">B(闽南菜):</span> 林四喜·闽南传家菜 (约¥80)。老洋房内享用。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-utensils mr-1 text-accent-red"></i> 晚餐 (厦门中山路)</span>
+                            <ul class="list-disc pl-5 text-ink-600 space-y-1">
+                                <li><span class="font-medium">A(传统):</span> 1980烧肉粽+莲欢海蛎煎 (约¥40)。经典组合。</li>
+                                <li><span class="font-medium">B(面食):</span> 赖厝埕扁食店/沈家肠粉 (约¥25)。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-moon mr-1 text-accent-red"></i> 宵夜 (酒店周边)</span>
+                            <p class="text-ink-600 pl-5">豪香里脊肉串 (约¥15)。炸猪里脊(叮嘱不撒辣)。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day 6 -->
+                <div class="bg-white p-6 ink-border shadow-sm rounded-lg relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-ink-800 text-white px-3 py-1 rounded-bl-lg font-serif">Day 6</div>
+                    <h3 class="text-xl font-bold text-ink-800 mb-2 mt-2">12月24日 (周四)</h3>
+                    <p class="text-accent-red font-medium mb-4">自由采买，满载而归</p>
+                    
+                    <div class="mb-4">
+                        <h4 class="font-bold text-ink-700 flex items-center border-b border-ink-200 pb-1 mb-2"><i class="fa-solid fa-map-location-dot mr-2 text-ink-400"></i>行程简介</h4>
+                        <p class="text-ink-600 text-sm leading-relaxed">早上在酒店周边的【八市】感受早市烟火气并采购伴手礼。中午退房，包车送机。</p>
+                    </div>
+
+                    <div class="space-y-3 bg-ink-50 p-3 rounded text-sm">
+                        <div>
+                            <span class="font-bold text-ink-700 block mb-1"><i class="fa-solid fa-bowl-food mr-1 text-accent-red"></i> 午餐 (前往机场前)</span>
+                            <p class="text-ink-600 pl-5">乌糖沙茶面/贡糖沙茶面 (约¥45)。自由加料。</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-ink-200 text-center text-ink-500">
+                            <i class="fa-solid fa-plane-arrival text-2xl mb-2"></i>
+                            <p>行程圆满结束</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="souvenirs" class="bg-white p-6 md:p-8 ink-border shadow-sm">
+            <h2 class="text-2xl text-ink-800 mb-6 brush-stroke-bottom inline-block"><i class="fa-solid fa-gift mr-2 text-accent-red"></i>特色伴手礼推荐</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left text-ink-600">
+                    <thead class="text-xs text-ink-700 uppercase bg-ink-100">
+                        <tr>
+                            <th scope="col" class="px-4 py-2 rounded-tl">分类</th>
+                            <th scope="col" class="px-4 py-2">推荐物品</th>
+                            <th scope="col" class="px-4 py-2 rounded-tr">购买地点建议</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-ink-200">
+                        <tr class="hover:bg-ink-50 transition-colors">
+                            <td class="px-4 py-3 font-medium whitespace-nowrap">文创纪念</td>
+                            <td class="px-4 py-3 font-bold text-ink-800">冰箱贴 (东西塔/簪花兔/滴水兽)</td>
+                            <td class="px-4 py-3">Day 2 泉州西街(钟楼附近)的文创店。单价约15-35元。</td>
+                        </tr>
+                        <tr class="hover:bg-ink-50 transition-colors">
+                            <td class="px-4 py-3 font-medium whitespace-nowrap">文创纪念</td>
+                            <td class="px-4 py-3 font-bold text-ink-800">冰箱贴 (鼓浪屿风貌/猫咪/路牌)</td>
+                            <td class="px-4 py-3">Day 5 鼓浪屿龙头路文艺小店或中山路杂货铺</td>
+                        </tr>
+                        <tr class="hover:bg-ink-50 transition-colors">
+                            <td class="px-4 py-3 font-medium whitespace-nowrap">泉州特产</td>
+                            <td class="px-4 py-3 font-bold text-ink-800">永春老醋 (侨新/桃溪牌)</td>
+                            <td class="px-4 py-3">Day 3 永春行程中老醋文创园直接购买</td>
+                        </tr>
+                        <tr class="hover:bg-ink-50 transition-colors">
+                            <td class="px-4 py-3 font-medium whitespace-nowrap">综合特产小吃</td>
+                            <td class="px-4 py-3">
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li><span class="font-bold text-ink-800">彬达香</span> (线香/盘香/车载香)</li>
+                                    <li><span class="font-bold text-ink-800">林记正泉茂绿豆饼</span></li>
+                                    <li><span class="font-bold text-ink-800">南普陀素饼/日光岩馅饼</span></li>
+                                </ul>
+                            </td>
+                            <td class="px-4 py-3">
+                                <ul class="space-y-1">
+                                    <li>Day 3 彬达香文创园，送礼佳品。</li>
+                                    <li>泉州西街或涂门街，皮酥馅软。</li>
+                                    <li>厦门经典，绿豆、椰子口味最受欢迎。</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-ink-50 transition-colors">
+                            <td class="px-4 py-3 font-medium whitespace-nowrap">厦门特产</td>
+                            <td class="px-4 py-3 font-bold text-ink-800">黄则和凤梨酥 / 椰子饼</td>
+                            <td class="px-4 py-3">中山路步行街有大型旗舰店。</td>
+                        </tr>
+                        <tr class="hover:bg-ink-50 transition-colors">
+                            <td class="px-4 py-3 font-medium whitespace-nowrap">茶与海产</td>
+                            <td class="px-4 py-3 font-bold text-ink-800">铁观音 / 烤海苔 / 干贝 等</td>
+                            <td class="px-4 py-3">茶叶在当地茶庄品尝后购买；海产干货在厦门八市采购。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="expenses" class="bg-white p-6 md:p-8 ink-border shadow-md border-t-4 border-t-accent-red">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl text-ink-800 brush-stroke-bottom inline-block"><i class="fa-solid fa-coins mr-2 text-accent-red"></i>行前与途中账本</h2>
+                <div class="flex items-center space-x-3">
+                    <button id="sync-btn" class="text-xs bg-ink-200 hover:bg-ink-300 text-ink-700 py-1 px-3 rounded transition-colors flex items-center shadow-sm">
+                        <i class="fa-solid fa-rotate-right mr-1" id="sync-icon"></i>同步数据
+                    </button>
+                    <div id="auth-status" class="text-sm text-ink-500 flex items-center">
+                        <span class="loader hidden mr-2" id="auth-loader"></span>
+                        <span id="auth-text">连接中...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-sm text-ink-500 mb-4 border-l-4 border-ink-300 pl-3">记录您的花销。数据将安全保存在云端（替代Google Sheets功能），方便您随时随地查看。</p>
+
+            <!-- Exchange Rate Setting -->
+            <div class="flex items-center space-x-2 text-sm text-ink-600 mb-6 bg-ink-50 p-2 rounded inline-flex border border-ink-200">
+                <i class="fa-solid fa-right-left text-ink-400"></i>
+                <span>汇率设定 (Exchange Rate): 1 SGD = </span>
+                <input type="number" id="exchange-rate" value="5.35" step="0.01" class="w-20 px-2 py-1 border border-ink-300 rounded text-center bg-white focus:ring-accent-red focus:border-accent-red">
+                <span>RMB</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Add Expense Form -->
+                <div class="md:col-span-1 bg-ink-50 p-4 rounded border border-ink-200">
+                    <h3 class="font-bold text-ink-700 mb-4 border-b border-ink-200 pb-2">添加新记录</h3>
+                    <form id="expense-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-ink-600 mb-1">阶段</label>
+                            <select id="exp-phase" class="w-full border-ink-300 rounded shadow-sm py-2 px-3 text-sm focus:ring-accent-red focus:border-accent-red bg-white" required>
+                                <option value="pre-trip">行前准备 (机票/酒店/包车等)</option>
+                                <option value="day1">Day 1 (12.19 厦门-泉州)</option>
+                                <option value="day2">Day 2 (12.20 泉州)</option>
+                                <option value="day3">Day 3 (12.21 永春)</option>
+                                <option value="day4">Day 4 (12.22 泉州-厦门)</option>
+                                <option value="day5">Day 5 (12.23 厦门)</option>
+                                <option value="day6">Day 6 (12.24 厦门-返程)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-ink-600 mb-1">类别</label>
+                            <select id="exp-category" class="w-full border-ink-300 rounded shadow-sm py-2 px-3 text-sm focus:ring-accent-red focus:border-accent-red bg-white" required>
+                                <option value="餐饮">餐饮 (午/晚/宵夜/小吃)</option>
+                                <option value="交通">交通 (机票/包车/打车)</option>
+                                <option value="住宿">住宿 (酒店)</option>
+                                <option value="门票">门票/体验 (景点/非遗)</option>
+                                <option value="购物">购物 (伴手礼/特产)</option>
+                                <option value="其他">其他杂项</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-ink-600 mb-1">描述</label>
+                            <input type="text" id="exp-desc" placeholder="例如：斯丹姜母鸭晚餐" class="w-full border-ink-300 rounded shadow-sm py-2 px-3 text-sm focus:ring-accent-red focus:border-accent-red border bg-white" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-ink-600 mb-1">金额与币种</label>
+                            <div class="flex space-x-2">
+                                <select id="exp-currency" class="w-1/3 border-ink-300 rounded shadow-sm py-2 px-3 text-sm focus:ring-accent-red focus:border-accent-red bg-white">
+                                    <option value="RMB">RMB (¥)</option>
+                                    <option value="SGD">SGD (S$)</option>
+                                </select>
+                                <input type="number" id="exp-amount" step="0.01" min="0" placeholder="0.00" class="w-2/3 border-ink-300 rounded shadow-sm py-2 px-3 text-sm focus:ring-accent-red focus:border-accent-red border bg-white" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="submit-exp-btn" class="w-full bg-ink-800 hover:bg-accent-red text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            保存记录
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Expense Summary and List -->
+                <div class="md:col-span-2 flex flex-col space-y-4">
+                    <!-- Summary Cards -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white border border-ink-200 p-4 rounded text-center shadow-sm">
+                            <p class="text-xs text-ink-500 mb-1">行前总计</p>
+                            <p class="text-2xl font-bold text-ink-800">¥ <span id="total-pre-rmb">0.00</span></p>
+                            <p class="text-sm font-medium text-ink-500 mt-1">S$ <span id="total-pre-sgd">0.00</span></p>
+                        </div>
+                        <div class="bg-white border border-accent-red/30 p-4 rounded text-center shadow-sm relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-8 h-8 bg-accent-red/10 rounded-bl-full"></div>
+                            <p class="text-xs text-ink-500 mb-1">旅途总计</p>
+                            <p class="text-2xl font-bold text-accent-red">¥ <span id="total-trip-rmb">0.00</span></p>
+                            <p class="text-sm font-medium text-red-400 mt-1">S$ <span id="total-trip-sgd">0.00</span></p>
+                        </div>
+                    </div>
+
+                    <!-- List -->
+                    <div class="bg-white border border-ink-200 rounded flex-grow flex flex-col overflow-hidden">
+                        <div class="bg-ink-100 px-4 py-2 border-b border-ink-200 flex justify-between items-center">
+                            <h3 class="font-bold text-ink-700 text-sm">消费明细</h3>
+                            <span id="loading-records" class="loader hidden"></span>
+                        </div>
+                        <div class="overflow-y-auto flex-grow p-0" style="max-height: 300px;">
+                            <ul id="expense-list" class="divide-y divide-ink-100">
+                                <!-- Records will be injected here -->
+                                <li class="p-4 text-center text-ink-400 text-sm italic" id="empty-state">暂无记录，请在左侧添加。</li>
+                            </ul>
+                        </div>
+                        <div class="bg-ink-50 px-4 py-2 border-t border-ink-200 flex justify-between items-center text-sm">
+                            <span class="font-bold text-ink-700">总消费</span>
+                            <div class="text-right">
+                                <div class="font-bold text-ink-900 text-lg">¥ <span id="total-all-rmb">0.00</span></div>
+                                <div class="font-medium text-ink-600">S$ <span id="total-all-sgd">0.00</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-ink-900 text-ink-300 py-8 text-center border-t border-accent-red mt-auto">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="font-serif mb-2 text-ink-400">祝 Tey Kai Loon 闽南之行，欢喜平安。</p>
+            <p class="text-xs">Generated for 泉州·厦门 6日游旅行计划 | 2026</p>
+        </div>
+    </footer>
+
+    <!-- Toast UI -->
+    <div id="toast">Message</div>
+
+    <script>
+        // ==========================================
+        // 请在此处填写你的 Google Apps Script Web App URL
+        // ==========================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8x6-IVeT0mVwLPdU2JULaBRqMjyluWoT7jTCPt3x-K7kSCaglkheX72VdgHrBF82d/exec'; // 例如: 'https://script.google.com/macros/s/AKfycb.../exec'
+        
+        let localExpenses = [];
+        let isCloudMode = SCRIPT_URL !== '' && SCRIPT_URL.startsWith('https://script.google.com/');
+
+        // DOM Elements
+        const form = document.getElementById('expense-form');
+        const submitBtn = document.getElementById('submit-exp-btn');
+        const expenseList = document.getElementById('expense-list');
+        const emptyState = document.getElementById('empty-state');
+        const authStatusText = document.getElementById('auth-text');
+        const authLoader = document.getElementById('auth-loader');
+        const loadingRecords = document.getElementById('loading-records');
+        const rateInput = document.getElementById('exchange-rate');
+
+        // Load saved rate
+        const savedRate = localStorage.getItem('exchange_rate');
+        if (savedRate) {
+            rateInput.value = savedRate;
+        }
+
+        rateInput.addEventListener('input', () => {
+            localStorage.setItem('exchange_rate', rateInput.value);
+            renderExpenses();
+        });
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function getPhaseLabel(val) {
+            const map = {
+                'pre-trip': '行前',
+                'day1': 'D1 厦门/泉州',
+                'day2': 'D2 泉州',
+                'day3': 'D3 永春',
+                'day4': 'D4 泉州/厦门',
+                'day5': 'D5 厦门',
+                'day6': 'D6 厦门/返'
+            };
+            return map[val] || val;
+        }
+
+        async function initApp() {
+            if (!isCloudMode) {
+                authStatusText.textContent = "本地离线模式 (未配置 GSheet)";
+                authStatusText.classList.add('text-amber-600');
+                
+                // 尝试从浏览器本地存储加载，避免刷新丢失
+                const saved = localStorage.getItem('trip_expenses');
+                if (saved) {
+                    try {
+                        localExpenses = JSON.parse(saved);
+                    } catch(e) { console.error(e); }
+                }
+                renderExpenses();
+                return;
+            }
+
+            authStatusText.textContent = "已连接 Google Sheets";
+            authStatusText.classList.add('text-green-600');
+            loadExpenses();
+        }
+
+        async function loadExpenses() {
+            loadingRecords.classList.remove('hidden');
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                
+                // 将 GSheet 数据转换为本地格式，并按时间倒序显示
+                localExpenses = data.map(row => ({
+                    id: row.ID.toString(),
+                    phase: row.Phase,
+                    category: row.Category,
+                    desc: row.Description,
+                    currency: row.Currency || 'RMB',
+                    amount: parseFloat(row.Amount)
+                })).reverse();
+                
+                renderExpenses();
+            } catch (error) {
+                console.error("加载数据失败:", error);
+                showToast("同步云端数据失败，请检查网络");
+                authStatusText.textContent = "云端连接失败，降级本地模式";
+                authStatusText.classList.remove('text-green-600');
+                authStatusText.classList.add('text-red-500');
+                isCloudMode = false;
+            } finally {
+                loadingRecords.classList.add('hidden');
+            }
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phase = document.getElementById('exp-phase').value;
+            const category = document.getElementById('exp-category').value;
+            const desc = document.getElementById('exp-desc').value;
+            const currency = document.getElementById('exp-currency').value;
+            const amount = parseFloat(document.getElementById('exp-amount').value);
+
+            if (!desc || isNaN(amount) || amount <= 0) {
+                showToast("请填写有效描述和金额");
+                return;
+            }
+
+            const newId = Date.now().toString();
+            const newExpense = { id: newId, phase, category, desc, currency, amount };
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loader border-t-white mr-2"></span> 保存中...';
+
+            if (isCloudMode) {
+                try {
+                    const payload = {
+                        action: 'add',
+                        phase: phase,
+                        category: category,
+                        desc: desc,
+                        currency: currency,
+                        amount: amount
+                    };
+                    
+                    // 使用 text/plain 绕过复杂的 CORS 预检
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload),
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8',
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    if(result.status === 'success') {
+                        newExpense.id = result.id; // 使用服务端生成的 ID
+                        localExpenses.unshift(newExpense);
+                        form.reset();
+                        renderExpenses();
+                        showToast("已同步至 Google Sheets");
+                    } else {
+                        throw new Error(result.message || "云端返回失败状态");
+                    }
+                } catch (error) {
+                    console.error("保存失败:", error);
+                    showToast("保存至云端失败");
+                }
+            } else {
+                // 本地离线保存
+                localExpenses.unshift(newExpense);
+                localStorage.setItem('trip_expenses', JSON.stringify(localExpenses));
+                form.reset();
+                renderExpenses();
+                showToast("记录已保存 (本地)");
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = '保存记录';
+        });
+
+        window.deleteExpense = async (id) => {
+            if (isCloudMode) {
+                showToast("删除中...");
+                try {
+                    const payload = {
+                        action: 'delete',
+                        id: id
+                    };
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify(payload),
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8',
+                        }
+                    });
+                    
+                    const result = await response.json();
+                    if(result.status === 'success') {
+                        localExpenses = localExpenses.filter(exp => exp.id !== id);
+                        renderExpenses();
+                        showToast("记录已从云端删除");
+                    } else {
+                         throw new Error("删除失败");
+                    }
+                } catch (error) {
+                    console.error("删除失败:", error);
+                    showToast("删除失败，请重试");
+                }
+            } else {
+                localExpenses = localExpenses.filter(exp => exp.id !== id);
+                localStorage.setItem('trip_expenses', JSON.stringify(localExpenses));
+                renderExpenses();
+                showToast("记录已删除");
+            }
+        };
+
+        function renderExpenses() {
+            expenseList.innerHTML = '';
+            let totalPreRMB = 0;
+            let totalTripRMB = 0;
+            let totalPreSGD = 0;
+            let totalTripSGD = 0;
+            
+            const rate = parseFloat(rateInput.value) || 5.35;
+
+            if (localExpenses.length === 0) {
+                expenseList.appendChild(emptyState);
+            } else {
+                localExpenses.forEach(exp => {
+                    const li = document.createElement('li');
+                    li.className = 'px-4 py-3 hover:bg-ink-50 transition-colors flex justify-between items-center group';
+                    
+                    const isPreTrip = exp.phase === 'pre-trip';
+                    
+                    // Calculate based on currency
+                    let amtRMB = 0;
+                    let amtSGD = 0;
+                    if (exp.currency === 'SGD') {
+                        amtSGD = exp.amount;
+                        amtRMB = exp.amount * rate;
+                    } else {
+                        amtRMB = exp.amount;
+                        amtSGD = exp.amount / rate;
+                    }
+
+                    if (isPreTrip) {
+                        totalPreRMB += amtRMB;
+                        totalPreSGD += amtSGD;
+                    } else {
+                        totalTripRMB += amtRMB;
+                        totalTripSGD += amtSGD;
+                    }
+
+                    const iconMap = {
+                        '餐饮': '<i class="fa-solid fa-utensils text-orange-500"></i>',
+                        '交通': '<i class="fa-solid fa-car text-blue-500"></i>',
+                        '住宿': '<i class="fa-solid fa-bed text-indigo-500"></i>',
+                        '门票': '<i class="fa-solid fa-ticket text-green-600"></i>',
+                        '购物': '<i class="fa-solid fa-bag-shopping text-pink-500"></i>',
+                        '其他': '<i class="fa-solid fa-box text-gray-500"></i>'
+                    };
+
+                    li.innerHTML = `
+                        <div class="flex items-start flex-grow">
+                            <div class="mt-1 mr-3 w-6 text-center text-lg">${iconMap[exp.category] || iconMap['其他']}</div>
+                            <div>
+                                <p class="text-sm font-medium text-ink-800">${exp.desc}</p>
+                                <div class="flex space-x-2 text-xs text-ink-500 mt-1">
+                                    <span class="bg-ink-100 px-1.5 py-0.5 rounded">${getPhaseLabel(exp.phase)}</span>
+                                    <span>${exp.category}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="text-right">
+                                <span class="block font-bold ${isPreTrip ? 'text-ink-700' : 'text-accent-red'}">
+                                    ${exp.currency === 'SGD' ? 'S$ ' : '¥ '}${exp.amount.toFixed(2)}
+                                </span>
+                            </div>
+                            <button onclick="deleteExpense('${exp.id}')" class="text-ink-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100" title="删除记录">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    `;
+                    expenseList.appendChild(li);
+                });
+            }
+
+            // Update Totals
+            document.getElementById('total-pre-rmb').textContent = totalPreRMB.toFixed(2);
+            document.getElementById('total-pre-sgd').textContent = totalPreSGD.toFixed(2);
+            
+            document.getElementById('total-trip-rmb').textContent = totalTripRMB.toFixed(2);
+            document.getElementById('total-trip-sgd').textContent = totalTripSGD.toFixed(2);
+            
+            document.getElementById('total-all-rmb').textContent = (totalPreRMB + totalTripRMB).toFixed(2);
+            document.getElementById('total-all-sgd').textContent = (totalPreSGD + totalTripSGD).toFixed(2);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initApp);
+
+        // Sync Button Event Listener
+        const syncBtn = document.getElementById('sync-btn');
+        const syncIcon = document.getElementById('sync-icon');
+
+        syncBtn.addEventListener('click', async () => {
+            if (!isCloudMode) {
+                showToast("当前为离线模式，无法同步云端数据");
+                return;
+            }
+            
+            // UI feedback
+            syncBtn.disabled = true;
+            syncIcon.classList.add('fa-spin');
+            authStatusText.textContent = "同步中...";
+            authStatusText.className = 'text-sm text-ink-500';
+            
+            await loadExpenses();
+            
+            // Reset UI
+            syncBtn.disabled = false;
+            syncIcon.classList.remove('fa-spin');
+            showToast("数据已同步");
+            authStatusText.textContent = "已连接 Google Sheets";
+            authStatusText.className = 'text-sm text-green-600';
+        });
+
+    </script>
+</body>
+</html>
